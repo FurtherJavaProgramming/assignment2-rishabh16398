@@ -1,4 +1,4 @@
-package org.example.assignment2;
+package org.example.assignment2.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
