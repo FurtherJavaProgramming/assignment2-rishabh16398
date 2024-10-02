@@ -67,17 +67,17 @@
     <!-- Confirm Password Field -->
     <PasswordField fx:id="confirmPasswordField" layoutX="207.0" layoutY="300.0" prefHeight="26.0" prefWidth="344.0" promptText="Confirm your password" />
 
-    <!-- Error Message Label -->
-    <Label fx:id="errorMessage" layoutX="220.0" layoutY="350.0" textFill="red" visible="false" />
+    <!-- Error Message Label (slightly moved to the left) -->
+    <Label fx:id="errorMessage" layoutX="180.0" layoutY="350.0" textFill="red" visible="false" />
 
     <!-- Register and Back Buttons -->
-    <Button layoutX="200.0" layoutY="400.0" mnemonicParsing="false" onAction="#handleRegister" prefHeight="26.0" prefWidth="120.0" style="-fx-background-color: #c32c2c;" text="Register" textAlignment="CENTER">
+    <Button layoutX="200.0" layoutY="400.0" mnemonicParsing="false"  prefHeight="26.0" prefWidth="120.0" style="-fx-background-color: #c32c2c;" text="Register" textAlignment="CENTER" onAction="#handleRegisterAction">
         <font>
             <Font name="Baloo Bhai 2 ExtraBold" size="14.0" />
         </font>
     </Button>
 
-    <Button layoutX="340.0" layoutY="400.0" mnemonicParsing="false" onAction="#handleBackToLogin" prefHeight="26.0" prefWidth="120.0" style="-fx-background-color: #c32c2c;" text="Back to Login" textAlignment="CENTER">
+    <Button layoutX="340.0" layoutY="400.0" mnemonicParsing="false"  prefHeight="26.0" prefWidth="120.0" style="-fx-background-color: #c32c2c;" text="Back to Login" textAlignment="CENTER" onAction="#handleBackAction">
         <font>
             <Font name="Baloo Bhai 2 ExtraBold" size="14.0" />
         </font>

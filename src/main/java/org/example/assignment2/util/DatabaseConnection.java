@@ -15,10 +15,11 @@ public class DatabaseConnection {
             this.connection = DriverManager.getConnection(URL);
             System.out.println("Connection to SQLite has been established.");
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error establishing database connection: " + e.getMessage());
         }
     }
 
+    // Singleton instance getter
     public static DatabaseConnection getInstance() {
         if (instance == null) {
             instance = new DatabaseConnection();
@@ -26,7 +27,16 @@ public class DatabaseConnection {
         return instance;
     }
 
+    // Get the connection, re-establish if it's closed
     public Connection getConnection() {
+        try {
+            if (connection == null || connection.isClosed()) {
+                System.out.println("Re-establishing database connection...");
+                this.connection = DriverManager.getConnection(URL);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error re-establishing connection: " + e.getMessage());
+        }
         return connection;
     }
 }
