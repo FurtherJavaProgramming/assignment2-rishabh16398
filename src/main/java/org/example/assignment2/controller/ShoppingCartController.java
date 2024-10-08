@@ -1,11 +1,17 @@
+// ShoppingCartController.java
 package org.example.assignment2.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 import org.example.assignment2.model.CartItem;
 import org.example.assignment2.model.CartManager;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class ShoppingCartController {
 
@@ -22,8 +28,6 @@ public class ShoppingCartController {
     @FXML
     private TableColumn<CartItem, Void> actionsColumn;
     @FXML
-    private Label stockWarningLabel;
-    @FXML
     private Label totalPriceLabel;
 
     private final CartManager cartManager = CartManager.getInstance();
@@ -32,12 +36,10 @@ public class ShoppingCartController {
     public void initialize() {
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-        totalColumn.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
+        totalColumn.setCellValueFactory(cellData -> cellData.getValue().totalPriceProperty().asObject());
 
-        // Set up quantity column with Spinners
         quantityColumn.setCellFactory(column -> new SpinnerTableCell());
 
-        // Set up actions column with Remove buttons
         actionsColumn.setCellFactory(column -> new TableCell<CartItem, Void>() {
             private final Button removeButton = new Button("Remove");
 
@@ -46,24 +48,18 @@ public class ShoppingCartController {
                     CartItem item = getTableView().getItems().get(getIndex());
                     cartManager.removeFromCart(item);
                     updateTotalPrice();
-                    checkStockAvailability();
                 });
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(removeButton);
-                }
+                setGraphic(empty ? null : removeButton);
             }
         });
 
         cartTable.setItems(cartManager.getCartContents());
         updateTotalPrice();
-        checkStockAvailability();
     }
 
     private class SpinnerTableCell extends TableCell<CartItem, Integer> {
@@ -77,7 +73,6 @@ public class ShoppingCartController {
                     cartItem.setQuantity(newVal);
                     cartItem.updateTotal();
                     updateTotalPrice();
-                    checkStockAvailability();
                 }
             });
         }
@@ -89,7 +84,7 @@ public class ShoppingCartController {
                 setGraphic(null);
             } else {
                 CartItem cartItem = getTableView().getItems().get(getIndex());
-                spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, cartItem.getBook().getStock(), cartItem.getQuantity()));
+                spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, Integer.MAX_VALUE, cartItem.getQuantity()));
                 setGraphic(spinner);
             }
         }
@@ -100,29 +95,45 @@ public class ShoppingCartController {
         totalPriceLabel.setText(String.format("Total Price: $%.2f", total));
     }
 
-    private void checkStockAvailability() {
-        boolean hasStockIssues = cartManager.hasStockIssues();
-        stockWarningLabel.setVisible(hasStockIssues);
-        if (hasStockIssues) {
-            stockWarningLabel.setText("Warning: Selected quantity exceeds available stock for some items.");
-        } else {
-            stockWarningLabel.setText("");
-        }
-    }
-
     @FXML
     private void handleCheckoutAction() {
-        if (!cartManager.hasStockIssues()) {
-            System.out.println("Proceeding to checkout...");
-            // Checkout logic here
+        cartManager.updateStockFromDatabase(); // Fetch latest stock levels from the database
+
+        boolean hasStockIssues = false;
+        StringBuilder stockIssuesMessage = new StringBuilder("Insufficient stock for:\n");
+
+        for (CartItem item : cartManager.getCartContents()) {
+            if (item.getQuantity() > item.getBook().getStock()) {
+                hasStockIssues = true;
+                stockIssuesMessage.append("- ").append(item.getBook().getTitle())
+                        .append(" (Available: ").append(item.getBook().getStock())
+                        .append(", Requested: ").append(item.getQuantity()).append(")\n");
+            }
+        }
+
+        if (hasStockIssues) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Stock Unavailable");
+            alert.setHeaderText("One or more items exceed available stock.");
+            alert.setContentText(stockIssuesMessage.toString());
+            alert.showAndWait();
         } else {
-            stockWarningLabel.setText("Adjust quantities - some items exceed stock.");
+            System.out.println("Proceeding to checkout...");
+            // Continue to checkout
         }
     }
 
     @FXML
     private void handleBackAction() {
-        System.out.println("Returning to Shop Now...");
-        // Back to Shop Now logic here
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/assignment2/fxml/ShopNow.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) cartTable.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Shop Now");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

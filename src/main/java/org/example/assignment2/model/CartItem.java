@@ -1,13 +1,23 @@
 package org.example.assignment2.model;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 public class CartItem {
-    private Book book;
-    private int quantity;
+    private final Book book;
+    private final IntegerProperty quantity;
+    private final DoubleProperty totalPrice;
 
     // Constructor
     public CartItem(Book book, int quantity) {
         this.book = book;
-        this.quantity = quantity;
+        this.quantity = new SimpleIntegerProperty(quantity);
+        this.totalPrice = new SimpleDoubleProperty(calculateTotalPrice());
+
+        // Update total price whenever quantity changes
+        this.quantity.addListener((obs, oldVal, newVal) -> updateTotal());
     }
 
     // Getter for book object
@@ -15,55 +25,40 @@ public class CartItem {
         return book;
     }
 
-    // Getter for the book title
     public String getTitle() {
         return book.getTitle();
     }
 
-    // Getter for the book authors
-    public String getAuthors() {
-        return book.getAuthors();
-    }
-
-    // Getter for the price of the book
     public double getPrice() {
         return book.getPrice();
     }
 
-    // Getter for the quantity of the item in the cart
     public int getQuantity() {
+        return quantity.get();
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity.set(quantity);
+    }
+
+    public IntegerProperty quantityProperty() {
         return quantity;
     }
 
-    // Setter for the quantity of the item in the cart
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    // Method to calculate the total price for this cart item
     public double getTotalPrice() {
-        return book.getPrice() * quantity;
+        return totalPrice.get();
     }
 
-    // Method to check if the selected quantity exceeds available stock
-    public boolean exceedsStock() {
-        return quantity > book.getStock();
+    public DoubleProperty totalPriceProperty() {
+        return totalPrice;
     }
 
-    // Update total based on the latest quantity set
+    // Method to calculate and update total price
+    private double calculateTotalPrice() {
+        return book.getPrice() * getQuantity();
+    }
+
     public void updateTotal() {
-        // This method can be used if you need to trigger total price updates in other parts of your code
-    }
-
-    // Optional: Override the toString method for easy printing/debugging
-    @Override
-    public String toString() {
-        return "CartItem{" +
-                "title='" + getTitle() + '\'' +
-                ", authors='" + getAuthors() + '\'' +
-                ", price=" + getPrice() +
-                ", quantity=" + quantity +
-                ", total=" + getTotalPrice() +
-                '}';
+        totalPrice.set(calculateTotalPrice());
     }
 }

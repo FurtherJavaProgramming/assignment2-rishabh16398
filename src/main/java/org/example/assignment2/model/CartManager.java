@@ -1,22 +1,22 @@
+// CartManager.java
 package org.example.assignment2.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.example.assignment2.util.DatabaseConnection;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class CartManager {
 
-    // Singleton instance
     private static CartManager instance;
+    private final ObservableList<CartItem> cartContents = FXCollections.observableArrayList();
 
-    // The cart items list
-    private ObservableList<CartItem> cartItems;
+    private CartManager() {}
 
-    // Private constructor
-    private CartManager() {
-        cartItems = FXCollections.observableArrayList();
-    }
-
-    // Method to get the singleton instance
     public static CartManager getInstance() {
         if (instance == null) {
             instance = new CartManager();
@@ -24,62 +24,46 @@ public class CartManager {
         return instance;
     }
 
-    // Add book to cart or update quantity if already exists
     public void addToCart(Book book, int quantity) {
-        boolean itemExists = false;
-        for (CartItem item : cartItems) {
-            if (item.getBook().equals(book)) {
-                item.setQuantity(item.getQuantity() + quantity);
-                itemExists = true;
-                break;
-            }
-        }
-        if (!itemExists) {
-            cartItems.add(new CartItem(book, quantity));
+        CartItem existingItem = findCartItem(book);
+        if (existingItem != null) {
+            existingItem.setQuantity(existingItem.getQuantity() + quantity);
+        } else {
+            cartContents.add(new CartItem(book, quantity));
         }
     }
 
-    // Update quantity of a book in the cart
-    public void updateCart(Book book, int quantity) {
-        for (CartItem item : cartItems) {
-            if (item.getBook().equals(book)) {
-                item.setQuantity(quantity);
-                break;
-            }
-        }
-    }
-
-    // Remove a book from the cart
     public void removeFromCart(CartItem cartItem) {
-        cartItems.remove(cartItem);
+        cartContents.remove(cartItem);
     }
 
-    // Retrieve the cart contents as an ObservableList
     public ObservableList<CartItem> getCartContents() {
-        return cartItems;
+        return cartContents;
     }
 
-    // Clear the cart
-    public void clearCart() {
-        cartItems.clear();
-    }
-
-    // Calculate total price
     public double getTotalPrice() {
-        double total = 0;
-        for (CartItem item : cartItems) {
-            total += item.getTotalPrice();
-        }
-        return total;
+        return cartContents.stream().mapToDouble(CartItem::getTotalPrice).sum();
     }
 
-    // Check if any items in the cart exceed stock
-    public boolean hasStockIssues() {
-        for (CartItem item : cartItems) {
-            if (item.getQuantity() > item.getBook().getStock()) {
-                return true;
+    private CartItem findCartItem(Book book) {
+        return cartContents.stream().filter(item -> item.getBook().equals(book)).findFirst().orElse(null);
+    }
+
+    public void updateStockFromDatabase() {
+        String query = "SELECT title, stock FROM books WHERE title = ?";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection()) {
+            for (CartItem item : cartContents) {
+                try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                    pstmt.setString(1, item.getBook().getTitle());
+                    ResultSet rs = pstmt.executeQuery();
+                    if (rs.next()) {
+                        int latestStock = rs.getInt("stock");
+                        item.getBook().setStock(latestStock);
+                    }
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return false;
     }
 }
