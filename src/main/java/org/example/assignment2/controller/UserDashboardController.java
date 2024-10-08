@@ -1,54 +1,101 @@
 package org.example.assignment2.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.text.Text;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import org.example.assignment2.model.Book;
+import org.example.assignment2.model.BookManager;
+import org.example.assignment2.model.UserManager;
+
+import java.io.IOException;
 
 public class UserDashboardController {
 
     @FXML
-    private Text welcomeMessage;  // The welcome message should be of type Text, not Label
+    private Text welcomeMessage;
 
     @FXML
-    private TableView<?> topBooksTable;  // Table for top 5 books
+    private TableView<Book> topBooksTable;
 
-    // Method to set the welcome message after login
+    @FXML
+    private TableColumn<Book, String> titleColumn;
+
+    @FXML
+    private TableColumn<Book, String> authorColumn;
+
+    @FXML
+    private TableColumn<Book, Double> priceColumn;
+
+    // Initialize method to set up columns and load data
+    @FXML
+    public void initialize() {
+        // Set up the columns in the table
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        authorColumn.setCellValueFactory(new PropertyValueFactory<>("authors")); // Ensure this matches Book class attribute
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        // Disable resizing for all columns
+        topBooksTable.getColumns().forEach(column -> column.setResizable(false));
+
+        // Load book data using BookManager
+        ObservableList<Book> topBooks = BookManager.getInstance().getTopBooks();
+        topBooksTable.setItems(topBooks);
+    }
+
+    // Method to set welcome message after login
     public void setWelcomeMessage(String message) {
         welcomeMessage.setText(message);
     }
 
-    // Handle View Profile action
     @FXML
     private void handleViewProfile() {
-        // Logic to view user profile
-        System.out.println("View Profile clicked");
+        try {
+            // Load the EditProfile.fxml file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/assignment2/fxml/EditProfile.fxml"));
+            Parent root = loader.load();
+
+            // Optionally, pass data to the EditProfileController if needed
+            EditProfileController controller = loader.getController();
+            // Set any initial data if needed, e.g., user details
+            controller.initializeFields(UserManager.getInstance().getCurrentUser());
+
+            // Get the current stage from the welcome message node
+            Stage stage = (Stage) welcomeMessage.getScene().getWindow();
+
+            // Set the new scene with the EditProfile.fxml content and show the stage
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Edit Profile");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    // Handle View Cart action
     @FXML
     private void handleViewCart() {
-        // Logic to view user cart
         System.out.println("View Cart clicked");
     }
 
-    // Handle View Orders action
     @FXML
     private void handleViewOrders() {
-        // Logic to view user orders
         System.out.println("View Orders clicked");
     }
 
-    // Handle Logout action
     @FXML
     private void handleLogout() {
-        // Logic to logout the user, and possibly navigate back to the login screen
         System.out.println("User logged out.");
     }
 
-    // Handle Shop Now action
     @FXML
     private void handleShopNow() {
-        // Logic for shopping or browsing books
         System.out.println("Shop Now clicked");
     }
 }

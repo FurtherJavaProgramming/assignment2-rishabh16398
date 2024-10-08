@@ -13,6 +13,7 @@ public class UserManager {
 
     private static UserManager instance;
     private List<User> users;
+    private User currentUser;  // Add a field to store the currently logged-in user
 
     // Private constructor
     private UserManager() {
@@ -93,13 +94,44 @@ public class UserManager {
         }
     }
 
-    // Method to authenticate user using local list
+    // Method to authenticate user and set the currentUser
     public User login(String username, String password) {
         for (User user : users) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                currentUser = user;  // Set the currently logged-in user
                 return user;  // User authenticated
             }
         }
         return null;  // User not found or password mismatch
     }
+
+    // Method to get the currently logged-in user
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public boolean updateUser(String username, String newFirstName, String newLastName, String newPassword) {
+        String sql = "UPDATE users SET first_name = ?, last_name = ?, password = ? WHERE username = ?";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            conn.setAutoCommit(false); // Begin transaction
+            pstmt.setString(1, newFirstName);
+            pstmt.setString(2, newLastName);
+            pstmt.setString(3, newPassword);
+            pstmt.setString(4, username);
+
+            int rowsAffected = pstmt.executeUpdate();
+            conn.commit(); // Commit transaction
+            return rowsAffected > 0; // Return true if at least one row was updated
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
 }

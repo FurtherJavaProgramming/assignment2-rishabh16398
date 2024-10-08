@@ -19,8 +19,9 @@
             </font>
         </Text>
 
-        <!-- Success Label -->
-        <Label fx:id="successMessage" layoutX="155.0" layoutY="120.0" prefWidth="300.0" textFill="green" visible="false" />
+        <!-- Success/Failure Label -->
+        <Label fx:id="errorMessage" layoutX="150.0" layoutY="140.0" prefWidth="300.0" style="-fx-text-fill: red; -fx-font-size: 14px;" visible="false" />
+        <Label fx:id="successMessage" layoutX="150.0" layoutY="140.0" prefWidth="300.0" style="-fx-text-fill: green; -fx-font-size: 14px;" visible="false" />
 
         <!-- Username Label -->
         <Text fill="#c32c2c" layoutX="73.0" layoutY="187.0" text="Username:">
@@ -50,14 +51,14 @@
         </Button>
 
         <!-- Cancel Button -->
-        <Button fx:id="cancelButton" onAction="#handleCancelAction" layoutX="213.0" layoutY="349.0" mnemonicParsing="false"  prefHeight="40.0" prefWidth="174.0" style="-fx-background-color: #c32c2c; -fx-background-radius: 10;" text="Cancel" textAlignment="CENTER">
+        <Button fx:id="cancelButton" onAction="#handleCancelAction" layoutX="213.0" layoutY="349.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="174.0" style="-fx-background-color: #c32c2c; -fx-background-radius: 10;" text="Cancel" textAlignment="CENTER">
             <font>
                 <Font name="Baloo Bhai 2 ExtraBold" size="16.0" />
             </font>
         </Button>
 
         <!-- Register Button -->
-        <Button fx:id="registerButton" onAction="#handleRegisterAction" layoutX="213.0" layoutY="404.0" mnemonicParsing="false"  prefHeight="40.0" prefWidth="174.0" style="-fx-background-color: #c32c2c; -fx-background-radius: 10;" text="Register" textAlignment="CENTER">
+        <Button fx:id="registerButton" onAction="#handleRegisterAction" layoutX="213.0" layoutY="404.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="174.0" style="-fx-background-color: #c32c2c; -fx-background-radius: 10;" text="Register" textAlignment="CENTER">
             <font>
                 <Font name="Baloo Bhai 2 ExtraBold" size="16.0" />
             </font>

@@ -62,11 +62,12 @@
         <!-- Table for Top 5 Books -->
         <TableView fx:id="topBooksTable" prefHeight="350.0" prefWidth="740.0">
             <columns>
-                <TableColumn fx:id="titleColumn" prefWidth="320.0" text="Title" />
-                <TableColumn fx:id="authorColumn" prefWidth="240.0" text="Author" />
-                <TableColumn fx:id="priceColumn" prefWidth="100.0" text="Price" />
+                <TableColumn fx:id="titleColumn" text="Title" prefWidth="320.0" />
+                <TableColumn fx:id="authorColumn" text="Author" prefWidth="240.0" />
+                <TableColumn fx:id="priceColumn" text="Price" prefWidth="214.0" />
             </columns>
         </TableView>
+
 
         <!-- Spacer between table and Shop Now button -->
         <Region prefHeight="20.0" />
