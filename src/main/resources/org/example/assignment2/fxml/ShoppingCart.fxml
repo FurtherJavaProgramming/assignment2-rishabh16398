@@ -43,13 +43,23 @@
             <!-- TableView for Cart Items -->
             <TableView fx:id="cartTable" prefHeight="400" prefWidth="700" style="-fx-background-color: #ffffff; -fx-padding: 10;">
                 <columns>
-                    <TableColumn text="Title" prefWidth="250.0" cellValueFactory="${titleProperty}"/>
-                    <TableColumn text="Quantity" prefWidth="100.0" cellValueFactory="${quantityProperty}"/>
-                    <TableColumn text="Price" prefWidth="100.0" cellValueFactory="${priceProperty}"/>
-                    <TableColumn text="Total" prefWidth="120.0" cellValueFactory="${totalProperty}"/>
-                    <TableColumn text="Actions" prefWidth="130.0" cellFactory="${actionsCellFactory}"/>
+                    <TableColumn fx:id="titleColumn" text="Title" prefWidth="250.0">
+                        <cellValueFactory><PropertyValueFactory property="title" /></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="quantityColumn" text="Quantity" prefWidth="100.0" />
+                    <TableColumn fx:id="priceColumn" text="Price" prefWidth="100.0">
+                        <cellValueFactory><PropertyValueFactory property="price" /></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="totalColumn" text="Total" prefWidth="120.0">
+                        <cellValueFactory><PropertyValueFactory property="totalPrice" /></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="130.0" />
                 </columns>
             </TableView>
+
+            <!-- Warning Label for Stock Availability -->
+            <Label fx:id="stockWarningLabel" text="Warning: Selected quantity exceeds available stock for some items."
+                   style="-fx-text-fill: red; -fx-font-size: 14px;" visible="false"/>
 
             <!-- Total Price Label -->
             <Label fx:id="totalPriceLabel" text="Total Price: $0.00" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />

@@ -96,6 +96,21 @@ public class UserDashboardController {
 
     @FXML
     private void handleShopNow() {
-        System.out.println("Shop Now clicked");
+        try {
+            // Load the ShopNow.fxml file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/assignment2/fxml/ShopNow.fxml"));
+            Parent root = loader.load();
+
+            // Get the current stage from the welcome message node
+            Stage stage = (Stage) welcomeMessage.getScene().getWindow();
+
+            // Set the new scene with the ShopNow.fxml content and show the stage
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Shop Now");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
