@@ -1,19 +1,13 @@
 package org.example.assignment2.model;
 
-public class Admin {
-    private String username;
-    private boolean isAdmin;
+public class Admin extends Account {
 
     public Admin(String username, boolean isAdmin) {
-        this.username = username;
-        this.isAdmin = isAdmin;
+        super(username, isAdmin); // Admins always have isAdmin set to true
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public boolean isAdmin() {
-        return isAdmin;
+    @Override
+    public String getRole() {
+        return "Admin";
     }
 }

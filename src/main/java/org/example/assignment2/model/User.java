@@ -1,48 +1,35 @@
 package org.example.assignment2.model;
 
-public class User {
+public class User extends Account {
 
     private int userId;
-    private String username;
     private String password;
     private String firstName;
     private String lastName;
-    private boolean isAdmin;
 
-    // Constructor with user ID (for cases where the ID is retrieved from the database)
+    // Constructor with user ID
     public User(int userId, String username, String password, String firstName, String lastName, boolean isAdmin) {
+        super(username, isAdmin);
         this.userId = userId;
-        this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.isAdmin = isAdmin;
     }
 
-    // Constructor without user ID (used during registration)
+    // Constructor without user ID (for use during registration)
     public User(String username, String password, String firstName, String lastName, boolean isAdmin) {
-        this.username = username;
+        super(username, isAdmin);
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.isAdmin = isAdmin;
     }
 
-    // Getters and Setters
     public int getUserId() {
         return userId;
     }
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
@@ -69,12 +56,9 @@ public class User {
         this.lastName = lastName;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
+    @Override
+    public String getRole() {
+        return isAdmin ? "Admin" : "Regular User";
     }
 
     @Override
