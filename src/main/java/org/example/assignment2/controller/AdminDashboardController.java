@@ -45,12 +45,24 @@ public class AdminDashboardController {
 
     @FXML
     private void initialize() {
-        // Set up table columns
+        // Set the TableView to non-editable
+        booksTable.setEditable(false);
+
+        // Set up table columns (non-editable and non-resizable)
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        titleColumn.setResizable(false);
+
         authorsColumn.setCellValueFactory(new PropertyValueFactory<>("authors"));
+        authorsColumn.setResizable(false);
+
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        priceColumn.setResizable(false);
+
         soldCopiesColumn.setCellValueFactory(new PropertyValueFactory<>("soldCopies"));
+        soldCopiesColumn.setResizable(false);
+
         stockColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        stockColumn.setResizable(false);
 
         // Load books into the table
         loadBooks();
