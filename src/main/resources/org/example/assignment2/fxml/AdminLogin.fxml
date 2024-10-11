@@ -5,45 +5,58 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
 
-<VBox alignment="CENTER" prefHeight="350" prefWidth="450" spacing="20"
-      style="-fx-background-color: linear-gradient(to bottom right, #f0f0f0, #e6e6e6); -fx-padding: 30; -fx-border-color: #c32c2c; -fx-border-width: 2; -fx-border-radius: 15;"
-      xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="org.example.assignment2.controller.AdminLoginController">
+<StackPane alignment="CENTER" prefHeight="400" prefWidth="500"
+           style="-fx-background-color: linear-gradient(to bottom right, #f8f8f8, #e6e6e6);"
+           xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="org.example.assignment2.controller.AdminLoginController">
 
-    <!-- Title -->
-    <Label text="Admin Login"
-           style="-fx-font-size: 28px; -fx-text-fill: #c32c2c; -fx-font-family: 'Baloo Bhai 2 ExtraBold'; -fx-padding: 0 0 20 0;" />
+    <!-- Outer VBox for Padding and Centering -->
+    <VBox alignment="CENTER" spacing="20"
+          style="-fx-padding: 30; -fx-background-color: #ffffff; -fx-border-radius: 15; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0.2, 0, 4);">
 
-    <!-- Username Input -->
-    <VBox alignment="CENTER_LEFT" spacing="5">
-        <Label text="Username" style="-fx-font-size: 14px; -fx-text-fill: #2c3e50; -fx-font-family: 'Baloo Bhai 2 Bold';" />
-        <TextField fx:id="usernameField"
-                   maxWidth="360.0"
-                   prefHeight="36.0"
-                   promptText="Enter Username"
-                   style="-fx-font-family: 'Arial'; -fx-background-color: #ffffff; -fx-border-color: #ddd; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 5 10;" />
-    </VBox>
+        <!-- Title -->
+        <Label text="Admin Login"
+               style="-fx-font-size: 28px; -fx-text-fill: #c32c2c; -fx-font-family: 'Baloo Bhai 2 ExtraBold'; -fx-padding: 0 0 20 0;" />
 
-    <!-- Password Input -->
-    <VBox alignment="CENTER_LEFT" spacing="5">
-        <Label text="Password" style="-fx-font-size: 14px; -fx-text-fill: #2c3e50; -fx-font-family: 'Baloo Bhai 2 Bold';" />
-        <PasswordField fx:id="passwordField"
+        <!-- Username Input -->
+        <VBox alignment="CENTER_LEFT" spacing="5">
+            <Label text="Username" style="-fx-font-size: 14px; -fx-text-fill: #2c3e50; -fx-font-family: 'Baloo Bhai 2 Bold';" />
+            <TextField fx:id="usernameField"
                        maxWidth="360.0"
                        prefHeight="36.0"
-                       promptText="Enter Password"
+                       promptText="Enter Username"
                        style="-fx-font-family: 'Arial'; -fx-background-color: #ffffff; -fx-border-color: #ddd; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 5 10;" />
+        </VBox>
+
+        <!-- Password Input -->
+        <VBox alignment="CENTER_LEFT" spacing="5">
+            <Label text="Password" style="-fx-font-size: 14px; -fx-text-fill: #2c3e50; -fx-font-family: 'Baloo Bhai 2 Bold';" />
+            <PasswordField fx:id="passwordField"
+                           maxWidth="360.0"
+                           prefHeight="36.0"
+                           promptText="Enter Password"
+                           style="-fx-font-family: 'Arial'; -fx-background-color: #ffffff; -fx-border-color: #ddd; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 5 10;" />
+        </VBox>
+
+        <!-- Error Label -->
+        <Label fx:id="errorLabel"
+               text=""
+               visible="false"
+               style="-fx-text-fill: red; -fx-font-size: 12px; -fx-font-family: 'Arial'; -fx-padding: 5;" />
+
+        <!-- Login Button -->
+        <Button fx:id="loginButton" text="Login"
+                prefHeight="40"
+                prefWidth="180"
+                style="-fx-background-color: #c32c2c; -fx-text-fill: white; -fx-font-size: 18px; -fx-font-family: 'Arial'; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 4, 0.2, 0, 2);" />
+
+        <!-- Back Button -->
+        <Button fx:id="backButton" text="Back to Welcome"
+                onAction="#handleBackToWelcome"
+                prefHeight="40"
+                prefWidth="180"
+                style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 18px; -fx-font-family: 'Arial'; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 4, 0.2, 0, 2);" />
     </VBox>
-
-    <!-- Error Label -->
-    <Label fx:id="errorLabel"
-           text=""
-           visible="false"
-           style="-fx-text-fill: red; -fx-font-size: 12px; -fx-font-family: 'Arial'; -fx-padding: 5;" />
-
-    <Button fx:id="loginButton" text="Login"
-            prefHeight="40"
-            prefWidth="180"
-            style="-fx-background-color: #c32c2c; -fx-text-fill: white; -fx-font-size: 18px; -fx-font-family: 'Arial'; -fx-background-radius: 10;" />
-
-</VBox>
+</StackPane>

@@ -29,6 +29,9 @@ public class AdminLoginController {
     private Button loginButton;
 
     @FXML
+    private Button backButton;
+
+    @FXML
     private void initialize() {
         // Use lambda for the button's onAction
         loginButton.setOnAction(event -> handleLogin());
@@ -58,6 +61,26 @@ public class AdminLoginController {
             stage.setTitle("Admin Dashboard");
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleBackToWelcome() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/assignment2/fxml/Welcome.fxml"));
+            if (loader.getLocation() == null) {
+                throw new IOException("FXML file not found.");
+            }
+
+            Parent root = loader.load();
+
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Welcome");
+        } catch (IOException e) {
+            e.printStackTrace();
+            errorLabel.setText("Failed to load the Welcome Page.");
+            errorLabel.setVisible(true);
         }
     }
 }
