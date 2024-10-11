@@ -41,9 +41,9 @@
            visible="false"
            style="-fx-text-fill: red; -fx-font-size: 12px; -fx-font-family: 'Arial'; -fx-padding: 5;" />
 
-    <!-- Login Button -->
-    <Button text="Login"
+    <Button fx:id="loginButton" text="Login"
             prefHeight="40"
             prefWidth="180"
             style="-fx-background-color: #c32c2c; -fx-text-fill: white; -fx-font-size: 18px; -fx-font-family: 'Arial'; -fx-background-radius: 10;" />
+
 </VBox>

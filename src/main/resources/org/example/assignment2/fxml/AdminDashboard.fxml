@@ -36,21 +36,31 @@
                 </font>
             </Text>
 
-            <!-- TableView for Book Stock -->
             <TableView fx:id="booksTable" prefHeight="300" prefWidth="700" style="-fx-padding: 10;">
                 <columns>
-                    <TableColumn text="Title" prefWidth="200" cellValueFactory="${titleProperty}"/>
-                    <TableColumn text="Author(s)" prefWidth="200" cellValueFactory="${authorsProperty}"/>
-                    <TableColumn text="Price" prefWidth="100" cellValueFactory="${priceProperty}"/>
-                    <TableColumn text="Sold Copies" prefWidth="100" cellValueFactory="${soldCopiesProperty}"/>
-                    <TableColumn text="Stock" prefWidth="100" cellValueFactory="${stockProperty}"/>
+                    <TableColumn fx:id="titleColumn" text="Title" prefWidth="200">
+                        <cellValueFactory><PropertyValueFactory property="title" /></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="authorsColumn" text="Author(s)" prefWidth="200">
+                        <cellValueFactory><PropertyValueFactory property="authors" /></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="priceColumn" text="Price" prefWidth="100">
+                        <cellValueFactory><PropertyValueFactory property="price" /></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="soldCopiesColumn" text="Sold Copies" prefWidth="100">
+                        <cellValueFactory><PropertyValueFactory property="soldCopies" /></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="stockColumn" text="Stock" prefWidth="100">
+                        <cellValueFactory><PropertyValueFactory property="stock" /></cellValueFactory>
+                    </TableColumn>
                 </columns>
             </TableView>
+
 
             <!-- HBox for Buttons -->
             <HBox spacing="20" alignment="CENTER">
                 <!-- Update Stock Button -->
-                <Button text="Update Stock" prefHeight="50.0" prefWidth="200.0"
+                <Button fx:id="updateStockButton" text="Update Stock" prefHeight="50.0" prefWidth="200.0"
                         style="-fx-background-color: #c32c2c; -fx-text-fill: white; -fx-font-size: 16px;">
                     <font>
                         <Font name="Baloo Bhai 2 ExtraBold" size="16"/>
@@ -58,7 +68,7 @@
                 </Button>
 
                 <!-- Logout Button -->
-                <Button text="Logout" onAction="#handleLogout" prefHeight="50.0" prefWidth="200.0"
+                <Button fx:id="logoutButton" text="Logout" onAction="#handleLogout" prefHeight="50.0" prefWidth="200.0"
                         style="-fx-background-color: #c32c2c; -fx-text-fill: white; -fx-font-size: 16px;">
                     <font>
                         <Font name="Baloo Bhai 2 ExtraBold" size="16"/>
