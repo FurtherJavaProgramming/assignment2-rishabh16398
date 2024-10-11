@@ -58,6 +58,9 @@ public class EditProfileController {
         if (updateSuccess) {
             statusMessage.setText("Profile updated successfully.");
             statusMessage.setStyle("-fx-text-fill: green;");
+
+            // Update currentUser details
+            currentUser.setFirstName(newFirstName.isEmpty() ? currentUser.getFirstName() : newFirstName);
         } else {
             statusMessage.setText("Failed to update profile.");
             statusMessage.setStyle("-fx-text-fill: red;");
@@ -72,6 +75,12 @@ public class EditProfileController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/assignment2/fxml/UserDashboard.fxml"));
             Parent root = loader.load();
 
+            // Get the controller for the UserDashboard
+            UserDashboardController dashboardController = loader.getController();
+
+            // Pass the updated user data back to the UserDashboardController
+            dashboardController.setWelcomeMessage("Welcome, " + currentUser.getFirstName() + "!");
+
             // Set the new scene to the current stage
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
@@ -79,9 +88,6 @@ public class EditProfileController {
             stage.setTitle("User Dashboard");
             stage.show();
 
-            // Optionally, pass the user data back to the UserDashboardController
-            UserDashboardController dashboardController = loader.getController();
-            dashboardController.setWelcomeMessage("Welcome, " + currentUser.getFirstName() + "!");  // Optional: Set a welcome message with the user's first name
         } catch (IOException e) {
             e.printStackTrace();
         }
