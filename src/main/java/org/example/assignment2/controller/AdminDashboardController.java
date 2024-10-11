@@ -3,6 +3,9 @@ package org.example.assignment2.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -11,6 +14,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.example.assignment2.model.Book;
 import org.example.assignment2.model.BookManager;
+
+import java.io.IOException;
 
 public class AdminDashboardController {
 
@@ -78,9 +83,16 @@ public class AdminDashboardController {
     }
 
     private void handleUpdateStock() {
-        // Here you would open another window or prompt to update stock
-        System.out.println("Update Stock button clicked!");
-        // Add logic to open a dialog or a new scene for updating stock
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/assignment2/fxml/UpdateProduct.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) updateStockButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Update Product");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

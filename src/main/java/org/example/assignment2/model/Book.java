@@ -54,4 +54,9 @@ public class Book {
     public void setSoldCopies(int soldCopies) {
         this.soldCopies = soldCopies;
     }
+
+    @Override
+    public String toString() {
+        return title;
+    }
 }

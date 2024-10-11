@@ -75,4 +75,25 @@ public class BookManager {
 
         return books;
     }
+
+    // Method to update book details in the database
+    public boolean updateBook(Book book) {
+        String query = "UPDATE books SET price = ?, stock = ? WHERE title = ?";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setDouble(1, book.getPrice());
+            pstmt.setInt(2, book.getStock());
+            pstmt.setString(3, book.getTitle());
+
+            int rowsUpdated = pstmt.executeUpdate();
+            return rowsUpdated > 0; // return true if at least one row was updated
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false; // return false if the update failed
+    }
 }
