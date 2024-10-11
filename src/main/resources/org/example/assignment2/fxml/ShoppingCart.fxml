@@ -18,6 +18,12 @@
     <!-- Top Section with Navigation Buttons -->
     <top>
         <HBox spacing="20" alignment="CENTER" style="-fx-padding: 20; -fx-background-color: #ffffff;">
+            <Button text="Back to Dashboard" onAction="#handleBackToDashboardAction" prefHeight="40.0" prefWidth="200.0"
+                    style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 16px;">
+                <font>
+                    <Font name="Baloo Bhai 2 ExtraBold" size="16"/>
+                </font>
+            </Button>
             <Button text="Back to Catalog" onAction="#handleBackAction" prefHeight="40.0" prefWidth="180.0"
                     style="-fx-background-color: #c32c2c; -fx-text-fill: white; -fx-font-size: 16px;">
                 <font>
@@ -56,10 +62,6 @@
                     <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="130.0" />
                 </columns>
             </TableView>
-
-            <!-- Warning Label for Stock Availability -->
-            <Label fx:id="stockWarningLabel" text="Warning: Selected quantity exceeds available stock for some items."
-                   style="-fx-text-fill: red; -fx-font-size: 14px;" visible="false"/>
 
             <!-- Total Price Label -->
             <Label fx:id="totalPriceLabel" text="Total Price: $0.00" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />

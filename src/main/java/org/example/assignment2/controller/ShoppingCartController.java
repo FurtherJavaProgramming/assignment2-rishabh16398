@@ -136,4 +136,18 @@ public class ShoppingCartController {
             e.printStackTrace();
         }
     }
+    @FXML
+    private void handleBackToDashboardAction() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/assignment2/fxml/UserDashboard.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) cartTable.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("User Dashboard");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
