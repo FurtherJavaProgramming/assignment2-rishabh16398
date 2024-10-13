@@ -1,4 +1,3 @@
-// CartManager.java
 package org.example.assignment2.model;
 
 import javafx.collections.FXCollections;
@@ -50,7 +49,7 @@ public class CartManager {
     }
 
     public void updateStockFromDatabase() {
-        String query = "SELECT title, stock FROM books WHERE title = ?";
+        String query = "SELECT stock FROM books WHERE title = ?";
         try (Connection conn = DatabaseConnection.getInstance().getConnection()) {
             for (CartItem item : cartContents) {
                 try (PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -65,5 +64,43 @@ public class CartManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void clearCart() {
+        cartContents.clear();
+    }
+
+    public boolean finalizePurchase() {
+        String updateStockQuery = "UPDATE books SET stock = stock - ? WHERE title = ?";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection()) {
+            conn.setAutoCommit(false);
+            for (CartItem item : cartContents) {
+                if (item.getQuantity() > item.getBook().getStock()) {
+                    System.out.println("Not enough stock for " + item.getBook().getTitle());
+                    conn.rollback();
+                    return false;
+                }
+                try (PreparedStatement pstmt = conn.prepareStatement(updateStockQuery)) {
+                    pstmt.setInt(1, item.getQuantity());
+                    pstmt.setString(2, item.getBook().getTitle());
+                    pstmt.executeUpdate();
+                }
+            }
+            conn.commit();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean checkStockAvailability() {
+        for (CartItem item : cartContents) {
+            if (item.getQuantity() > item.getBook().getStock()) {
+                System.out.println("Not enough stock for " + item.getBook().getTitle());
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -4,48 +4,77 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 
 <VBox xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="org.example.assignment2.controller.CheckoutController"
-      spacing="20" alignment="CENTER" prefWidth="600" prefHeight="500"
+      spacing="20" alignment="CENTER" prefWidth="800" prefHeight="600"
       style="-fx-background-color: #f9f9f9; -fx-padding: 30;">
 
     <!-- Title Section -->
     <Label text="Checkout" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: #c32c2c;" />
 
-    <!-- Total Price Label -->
+    <!-- Table for Cart Items -->
+    <TableView fx:id="cartTable" prefHeight="250" prefWidth="700">
+        <columns>
+            <TableColumn fx:id="productColumn" text="Product" prefWidth="300">
+                <cellValueFactory>
+                    <PropertyValueFactory property="productName"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="quantityColumn" text="Quantity" prefWidth="150">
+                <cellValueFactory>
+                    <PropertyValueFactory property="quantity"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="priceColumn" text="Price" prefWidth="120">
+                <cellValueFactory>
+                    <PropertyValueFactory property="price"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="totalColumn" text="Total" prefWidth="130">
+                <cellValueFactory>
+                    <PropertyValueFactory property="total"/>
+                </cellValueFactory>
+            </TableColumn>
+        </columns>
+    </TableView>
+
+    <!-- Total Price Display -->
     <HBox alignment="CENTER_LEFT" spacing="20">
         <Label text="Total Price:" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
         <Label fx:id="totalPriceLabel" text="\$0.00" style="-fx-font-size: 18px;" />
     </HBox>
 
-    <!-- Card Number Input -->
-    <VBox spacing="10" alignment="CENTER_LEFT" prefWidth="500">
-        <Label text="Card Number" style="-fx-font-size: 16px; -fx-text-fill: #2c3e50;" />
-        <TextField fx:id="cardNumberField" promptText="Enter 16-digit card number" maxWidth="500" style="-fx-font-size: 14px;" />
-    </VBox>
+    <!-- Payment Details -->
+    <VBox spacing="10" alignment="CENTER_LEFT" prefWidth="700">
+        <Label text="Payment Information" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+        <!-- Card Number Input -->
+        <TextField fx:id="cardNumberField" promptText="Card Number" maxWidth="400" style="-fx-font-size: 14px;" />
 
-    <!-- Expiry Date and CVV in a Row -->
-    <HBox spacing="20" alignment="CENTER_LEFT" prefWidth="500">
-        <!-- Expiry Date -->
-        <VBox spacing="10" alignment="CENTER_LEFT">
-            <Label text="Expiry Date (MM/YY)" style="-fx-font-size: 16px; -fx-text-fill: #2c3e50;" />
+        <!-- Expiry Date and CVV in a Row -->
+        <HBox spacing="20" alignment="CENTER_LEFT">
+            <!-- Expiry Date -->
             <TextField fx:id="expiryDateField" promptText="MM/YY" maxWidth="150" style="-fx-font-size: 14px;" />
-        </VBox>
-
-        <!-- CVV -->
-        <VBox spacing="10" alignment="CENTER_LEFT">
-            <Label text="CVV" style="-fx-font-size: 16px; -fx-text-fill: #2c3e50;" />
-            <TextField fx:id="cvvField" promptText="3-digit CVV" maxWidth="100" style="-fx-font-size: 14px;" />
-        </VBox>
-    </HBox>
+            <!-- CVV -->
+            <TextField fx:id="cvvField" promptText="CVV" maxWidth="100" style="-fx-font-size: 14px;" />
+        </HBox>
+    </VBox>
 
     <!-- Error Message Display -->
     <Label fx:id="errorLabel" text="" textFill="red" style="-fx-font-size: 14px;" />
 
-    <!-- Confirm Payment Button -->
-    <Button text="Confirm Payment" onAction="#handleConfirmPayment" prefHeight="40.0" prefWidth="200.0"
-            style="-fx-background-color: #c32c2c; -fx-text-fill: white; -fx-font-size: 16px;" />
+    <!-- Action Buttons -->
+    <HBox spacing="20" alignment="CENTER">
+        <Button text="Cancel Order" onAction="#handleCancelOrder" prefHeight="40.0" prefWidth="150.0"
+                style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 16px;" />
+        <Button text="Back to Dashboard" onAction="#handleBackToDashboard" prefHeight="40.0" prefWidth="180.0"
+                style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 16px;" />
+        <Button text="Confirm Payment" onAction="#handleConfirmPayment" prefHeight="40.0" prefWidth="180.0"
+                style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-size: 16px;" />
+    </HBox>
 </VBox>

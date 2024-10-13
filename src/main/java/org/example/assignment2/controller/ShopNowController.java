@@ -97,10 +97,6 @@ public class ShopNowController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/assignment2/fxml/ShoppingCart.fxml"));
             Parent root = loader.load();
 
-            // Get the ShoppingCartController instance
-            ShoppingCartController shoppingCartController = loader.getController();
-
-            // Optionally, pass any necessary data to ShoppingCartController if needed
 
             // Set up the scene and stage for the shopping cart view
             Stage stage = (Stage) booksTable.getScene().getWindow();

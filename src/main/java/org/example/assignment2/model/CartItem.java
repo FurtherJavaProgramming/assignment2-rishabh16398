@@ -25,6 +25,7 @@ public class CartItem {
         return book;
     }
 
+    // Getter for the product name (book title)
     public String getTitle() {
         return book.getTitle();
     }

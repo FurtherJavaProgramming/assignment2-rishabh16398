@@ -119,10 +119,22 @@ public class ShoppingCartController {
             alert.showAndWait();
         } else {
             System.out.println("Proceeding to checkout...");
-            // Continue to checkout
+            navigateToCheckout();  // Call method to navigate to the Checkout scene
         }
     }
+    // Method to navigate to the Checkout scene
+    private void navigateToCheckout() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/assignment2/fxml/Checkout.fxml"));
+            Parent root = loader.load();
 
+            Stage stage = (Stage) cartTable.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Checkout");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     @FXML
     private void handleBackAction() {
         try {

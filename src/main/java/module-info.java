@@ -1,19 +1,24 @@
 module org.example.assignment2 {
+    // Required JavaFX modules
     requires javafx.controls;
     requires javafx.fxml;
+
+    // SQLite JDBC module
     requires org.xerial.sqlitejdbc;
 
-    // Add opens for reflection and mocking
+    // Opens the main package for FXML reflection and access to other JavaFX elements
     opens org.example.assignment2 to javafx.fxml;
+
+    // Export the main package if needed for testing or other purposes
     exports org.example.assignment2;
 
-    // Controller needs to be accessible by FXML
+    // Export and open the controller package to javafx.fxml for FXML controllers
     exports org.example.assignment2.controller;
     opens org.example.assignment2.controller to javafx.fxml;
 
-    // Allow Mockito to access the model package for testing purposes
+    // Open the model package to both Mockito (for testing) and FXML (if any FXML usage within models)
     opens org.example.assignment2.model to org.mockito, javafx.fxml;
 
-    // You may also need to export the model package if you're using it in tests
+    // Export the model package for potential test access
     exports org.example.assignment2.model;
 }

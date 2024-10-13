@@ -23,6 +23,20 @@ public class BookManager {
         }
         return instance;
     }
+    // Method to get bookId based on title (or title and author)
+    public int getBookIdByTitle(Connection conn, String title) throws SQLException {
+        String query = "SELECT book_id FROM books WHERE title = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, title);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("book_id");
+                } else {
+                    throw new SQLException("Book not found with title: " + title);
+                }
+            }
+        }
+    }
 
     // Method to fetch top 5 books based on sold copies
     public ObservableList<Book> getTopBooks() {
