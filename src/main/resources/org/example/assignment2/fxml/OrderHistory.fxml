@@ -1,40 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.control.Label?>
 
-<BorderPane xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.assignment2.controller.OrderHistoryController"
-            style="-fx-background-color: #f4f4f4;" prefHeight="600" prefWidth="800">
+<BorderPane prefHeight="600" prefWidth="800" style="-fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.assignment2.controller.OrderHistoryController">
 
     <!-- Top Section with Buttons -->
     <top>
-        <HBox spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 20; -fx-background-color: #ffffff;">
-            <Button text="Back to Dashboard" onAction="#handleBackAction" prefHeight="40" prefWidth="180"
-                    style="-fx-background-color: #c32c2c; -fx-text-fill: white; -fx-font-size: 16px;" />
+        <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 20; -fx-background-color: #ffffff;">
+            <Button onAction="#handleBackAction" prefHeight="40" prefWidth="180" style="-fx-background-color: #c32c2c; -fx-text-fill: white; -fx-font-size: 16px;" text="Back to Dashboard" />
+            <Button onAction="#handleExportCSV" prefHeight="40" prefWidth="120" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-size: 16px;" text="Export CSV" />
         </HBox>
     </top>
 
     <!-- Center Section with Table and Title -->
     <center>
-        <VBox spacing="20" alignment="CENTER" style="-fx-padding: 20;">
+        <VBox alignment="CENTER" spacing="20" style="-fx-padding: 20;">
 
             <!-- Order History Title -->
-            <Label text="Order History" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #c32c2c;" />
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #c32c2c;" text="Order History" />
 
             <!-- TableView for Orders -->
-            <TableView fx:id="orderTable" prefHeight="400" prefWidth="750" style="-fx-background-color: #ffffff; -fx-padding: 10;">
+            <TableView fx:id="orderTable" prefHeight="180.0" prefWidth="760.0" style="-fx-background-color: #ffffff; -fx-padding: 10;">
                 <columns>
-                    <TableColumn text="Select" prefWidth="100" cellFactory="${selectCellFactory}"/>
-                    <TableColumn text="Order Number" prefWidth="150" cellValueFactory="${orderNumberProperty}"/>
-                    <TableColumn text="Date &amp; Time" prefWidth="200" cellValueFactory="${dateTimeProperty}"/>
-                    <TableColumn text="Total Price" prefWidth="150" cellValueFactory="${totalPriceProperty}"/>
-                    <TableColumn text="Details" prefWidth="150" cellFactory="${detailsCellFactory}"/>
+                    <TableColumn fx:id="orderNumberColumn" prefWidth="150" text="Order Number" />
+                    <TableColumn fx:id="dateTimeColumn" prefWidth="200" text="Date &amp; Time" />
+                    <TableColumn fx:id="totalPriceColumn" prefWidth="150" text="Total Price" />
+                </columns>
+            </TableView>
+
+            <!-- Label for Order Details -->
+            <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #c32c2c;" text="Order Details" />
+
+            <!-- TableView for Order Items -->
+            <TableView fx:id="orderItemsTable" prefHeight="150" prefWidth="750" style="-fx-background-color: #ffffff; -fx-padding: 10;">
+                <columns>
+                    <TableColumn fx:id="bookTitleColumn" prefWidth="350" text="Book Title" />
+                    <TableColumn fx:id="quantityColumn" prefWidth="150" text="Quantity" />
+                    <TableColumn fx:id="priceColumn" prefWidth="100" text="Price" />
+                    <TableColumn fx:id="itemTotalPriceColumn" prefWidth="150" text="Total Price" />
                 </columns>
             </TableView>
         </VBox>

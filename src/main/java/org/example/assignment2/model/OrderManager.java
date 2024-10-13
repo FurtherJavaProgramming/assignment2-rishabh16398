@@ -3,6 +3,7 @@ package org.example.assignment2.model;
 import org.example.assignment2.util.DatabaseConnection;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderManager {
@@ -19,7 +20,7 @@ public class OrderManager {
         return instance;
     }
 
-    // Synchronized to prevent concurrent writes
+    // Place an order and its items
     public synchronized boolean placeOrder(List<CartItem> items, double totalPrice, LocalDateTime orderDatetime) {
         String insertOrderQuery = "INSERT INTO orders (user_id, order_datetime, total_price) VALUES (?, ?, ?)";
         String insertOrderItemQuery = "INSERT INTO order_items (order_id, book_id, book_title, quantity, price) VALUES (?, ?, ?, ?, ?)";
@@ -98,5 +99,55 @@ public class OrderManager {
                 }
             }
         }
+    }
+
+
+    public List<Order> getOrdersByUserId(int userId) {
+        List<Order> orders = new ArrayList<>();
+        String query = "SELECT * FROM orders WHERE user_id = ? ORDER BY order_datetime DESC";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, userId);  // Filter by user ID
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int orderId = rs.getInt("order_id");
+                LocalDateTime orderDateTime = LocalDateTime.parse(rs.getString("order_datetime"));
+                double totalPrice = rs.getDouble("total_price");
+
+                Order order = new Order(orderId, orderDateTime, totalPrice);
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
+
+
+    // Retrieve all items for a specific order
+    public List<OrderItem> getOrderItems(int orderId) {
+        List<OrderItem> orderItems = new ArrayList<>();
+        String query = "SELECT book_title, quantity, price FROM order_items WHERE order_id = ?";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, orderId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String bookTitle = rs.getString("book_title");
+                int quantity = rs.getInt("quantity");
+                double price = rs.getDouble("price");
+
+                OrderItem orderItem = new OrderItem(bookTitle, quantity, price);
+                orderItems.add(orderItem);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orderItems;
     }
 }

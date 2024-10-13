@@ -74,7 +74,7 @@
     <HBox spacing="20" alignment="CENTER">
         <Button fx:id="cancelButton" text="Cancel Order" onAction="#handleCancelOrder" prefHeight="40.0" prefWidth="150.0"
                 style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 16px;" />
-        <Button text="Back to Dashboard" onAction="#handleBackToDashboard" prefHeight="40.0" prefWidth="180.0"
+        <Button fx:id="backButton" text="Back to Dashboard" onAction="#handleBackToDashboard" prefHeight="40.0" prefWidth="180.0"
                 style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 16px;" />
         <Button text="Confirm Payment" onAction="#handleConfirmPayment" prefHeight="40.0" prefWidth="180.0"
                 style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-size: 16px;" />

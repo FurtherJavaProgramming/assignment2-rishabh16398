@@ -3,6 +3,9 @@ package org.example.assignment2.controller;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
@@ -10,6 +13,8 @@ import org.example.assignment2.model.Book;
 import org.example.assignment2.model.CartItem;
 import org.example.assignment2.model.CartManager;
 import org.example.assignment2.model.OrderManager;
+
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -130,13 +135,33 @@ public class CheckoutController {
 
     @FXML
     private void handleCancelOrder() {
-        cartManager.clearCart();
-        ((Stage) cancelButton.getScene().getWindow()).close();
+        try {
+            // Load the Shopping Cart scene
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/assignment2/fxml/ShoppingCart.fxml"));
+            Parent root = loader.load();
+
+            // Set the scene to the current stage
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Shopping Cart");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void handleBackToDashboard() {
-        // Logic to navigate back to the UserDashboard scene
-        System.out.println("Back to Dashboard clicked");
+        try {
+            // Load the User Dashboard scene
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/assignment2/fxml/UserDashboard.fxml"));
+            Parent root = loader.load();
+
+            // Set the scene to the current stage
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("User Dashboard");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

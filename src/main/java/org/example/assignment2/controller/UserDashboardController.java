@@ -86,9 +86,23 @@ public class UserDashboardController {
 
     @FXML
     private void handleViewOrders() {
-        System.out.println("View Orders clicked");
-    }
+        try {
+            // Load the OrderHistory.fxml file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/assignment2/fxml/OrderHistory.fxml"));
+            Parent root = loader.load();
 
+            // Get the current stage from the welcome message node
+            Stage stage = (Stage) welcomeMessage.getScene().getWindow();
+
+            // Set the new scene with the OrderHistory.fxml content and show the stage
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Order History");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     @FXML
     private void handleLogout() {
         System.out.println("User logged out.");
