@@ -85,9 +85,16 @@ public class LoginController {
 
     // Handle Cancel Button action
     @FXML
-    private void handleCancelAction(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
+    private void handleCancelAction(ActionEvent event) throws IOException {
+        // Load the Welcome.fxml file
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/assignment2/fxml/Welcome.fxml"));
+        Parent root = loader.load();
+
+        // Get the current stage and set the welcome scene on it
+        Stage stage = (Stage) successMessage.getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Welcome Page");
+
     }
 
     // Handle Register Button action

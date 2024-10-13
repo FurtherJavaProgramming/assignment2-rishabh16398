@@ -25,9 +25,6 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) throws SQLException {
-//        String jdbcUrl = "jdbc:sqlite:/Users/rishabh/Desktop/Advance Programming/Assignment 2/Assignment 2/bookStore.db";
-//        DatabaseInitializer.initialize();
-//        DataInitializer.insertInitialData();
         launch();
     }
 }

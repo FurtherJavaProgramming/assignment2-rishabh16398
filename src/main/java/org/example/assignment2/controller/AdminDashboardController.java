@@ -97,11 +97,22 @@ public class AdminDashboardController {
 
     @FXML
     private void handleLogout() {
-        // Close the admin dashboard and return to the login or welcome page
-        Stage stage = (Stage) logoutButton.getScene().getWindow();
-        stage.close();
+        try {
+            // Load the Welcome.fxml file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/assignment2/fxml/Welcome.fxml"));
+            Parent root = loader.load();
 
-        // Optionally, open the login or welcome page here
-        System.out.println("Admin logged out.");
+            // Get the current stage and set the welcome scene on it
+            Stage stage = (Stage) logoutButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Welcome");
+
+            // Optionally, clear any session-specific data if needed here
+            System.out.println("Admin logged out.");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 }

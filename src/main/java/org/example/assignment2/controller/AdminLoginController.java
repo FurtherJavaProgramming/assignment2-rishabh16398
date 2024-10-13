@@ -76,7 +76,7 @@ public class AdminLoginController {
 
             Stage stage = (Stage) loginButton.getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("Welcome");
+            stage.setTitle("Welcome Page");
         } catch (IOException e) {
             e.printStackTrace();
             errorLabel.setText("Failed to load the Welcome Page.");
