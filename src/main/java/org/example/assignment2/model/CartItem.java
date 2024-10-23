@@ -10,7 +10,7 @@ public class CartItem {
     private final IntegerProperty quantity;
     private final DoubleProperty totalPrice;
 
-    // Constructor
+
     public CartItem(Book book, int quantity) {
         this.book = book;
         this.quantity = new SimpleIntegerProperty(quantity);

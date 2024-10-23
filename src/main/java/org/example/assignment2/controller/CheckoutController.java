@@ -76,6 +76,7 @@ public class CheckoutController {
         totalPriceLabel.setText(String.format("$%.2f", totalPrice));
     }
 
+    //Handler to make and validate payments
     @FXML
     private void handleConfirmPayment() {
         if (cartManager.getCartContents().isEmpty()) {

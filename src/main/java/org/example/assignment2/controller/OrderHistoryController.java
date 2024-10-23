@@ -124,10 +124,21 @@ public class OrderHistoryController {
         }
     }
 
+    // Handler to export CSV
     @FXML
     private void handleExportCSV() {
+        // Get the selected orders from the table
+        ObservableList<Order> selectedOrders = orderTable.getSelectionModel().getSelectedItems();
+
+        // Check if any orders are selected
+        if (selectedOrders == null || selectedOrders.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Please select at least one order to export.", ButtonType.OK);
+            alert.showAndWait();
+            return;
+        }
+
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save Order History");
+        fileChooser.setTitle("Save Selected Order(s)");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
         File file = fileChooser.showSaveDialog(orderTable.getScene().getWindow());
 
@@ -135,14 +146,13 @@ public class OrderHistoryController {
             try (FileWriter writer = new FileWriter(file)) {
                 // Writing the header for orders
                 writer.write("Order Number,Date & Time,Total Price\n");
-                for (Order order : orders) {
-                    // Using getFormattedOrderDatetime for properly formatted date-time
+                for (Order order : selectedOrders) {
                     writer.write(order.getOrderId() + "," + order.getFormattedOrderDatetime() + "," + order.getTotalPrice() + "\n");
                 }
 
                 // Writing the header for order items
                 writer.write("\nOrder Items\nOrder Number,Book Title,Quantity,Price,Total Price\n");
-                for (Order order : orders) {
+                for (Order order : selectedOrders) {
                     List<OrderItem> orderItemList = orderManager.getOrderItems(order.getOrderId());
                     for (OrderItem item : orderItemList) {
                         writer.write(order.getOrderId() + "," + item.getBookTitle() + "," + item.getQuantity() + "," + item.getPrice() + "," + item.getTotalPrice() + "\n");
