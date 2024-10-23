@@ -10,6 +10,9 @@ import org.example.assignment2.util.DatabaseInitializer;
 import java.io.IOException;
 import java.sql.*;
 
+
+
+//Main Class to load the welcome page and to start the program
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {

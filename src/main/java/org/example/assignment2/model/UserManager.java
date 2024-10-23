@@ -105,7 +105,7 @@ public class UserManager {
     // Method to authenticate user and set the currentUser
     public User login(String username, String password) {
         for (User user : users) {
-            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password) && !user.isAdmin) {
                 currentUser = user;  // Set the currently logged-in user
                 return user;  // User authenticated
             }

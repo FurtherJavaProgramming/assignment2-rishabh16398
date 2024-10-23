@@ -34,6 +34,8 @@ public class RegisterController {
     @FXML
     private Label errorMessage;
 
+
+    //Register Button Handler
     @FXML
     private void handleRegisterAction(ActionEvent event) {
         String firstName = firstNameField.getText();
@@ -60,6 +62,8 @@ public class RegisterController {
         }
     }
 
+
+    //Back Button Handler
     @FXML
     private void handleBackAction(ActionEvent event) {
         try {
@@ -80,6 +84,7 @@ public class RegisterController {
         }
     }
 
+    //Function to move to the Login Screen with the successful message
     private void moveToLoginScreen(ActionEvent event, String successMessage) {
         try {
             // Load the Login.fxml file

@@ -81,7 +81,22 @@ public class UserDashboardController {
 
     @FXML
     private void handleViewCart() {
-        System.out.println("View Cart clicked");
+        try {
+            // Load the Cart.fxml file (Ensure this file exists in your resources)
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/assignment2/fxml/ShoppingCart.fxml"));
+            Parent root = loader.load();
+
+            // Get the current stage from the welcome message node
+            Stage stage = (Stage) welcomeMessage.getScene().getWindow();
+
+            // Set the new scene with the Cart.fxml content and show the stage
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Shopping Cart");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -103,10 +118,30 @@ public class UserDashboardController {
             e.printStackTrace();
         }
     }
+
+    //User Logout Handler
     @FXML
     private void handleLogout() {
-        System.out.println("User logged out.");
+        try {
+            // Load the WelcomePage.fxml file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/assignment2/fxml/Welcome.fxml"));
+            Parent root = loader.load();
+
+            // Get the current stage from the welcome message node
+            Stage stage = (Stage) welcomeMessage.getScene().getWindow();
+
+            // Set the new scene with the WelcomePage.fxml content and show the stage
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Welcome");
+            stage.show();
+
+            System.out.println("User logged out.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
     @FXML
     private void handleShopNow() {
