@@ -21,7 +21,7 @@ public class UserManagerTest {
     // Test successful user registration
     @Test
     public void testRegisterUser_Success() {
-        boolean result = userManager.registerUser("John", "Doe", "j12345", "password123", false);
+        boolean result = userManager.registerUser("John", "Doe", "jafaf1", "password123", false);
         assertTrue(result, "User should be successfully registered.");
     }
 
