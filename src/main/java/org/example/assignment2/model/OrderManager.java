@@ -21,14 +21,15 @@ public class OrderManager {
     }
 
     // Place an order and its items
+    // OrderManager.java
     public synchronized boolean placeOrder(List<CartItem> items, double totalPrice, LocalDateTime orderDatetime) {
         String insertOrderQuery = "INSERT INTO orders (user_id, order_datetime, total_price) VALUES (?, ?, ?)";
         String insertOrderItemQuery = "INSERT INTO order_items (order_id, book_id, book_title, quantity, price) VALUES (?, ?, ?, ?, ?)";
+        String updateBookStockQuery = "UPDATE books SET stock = stock - ? WHERE book_id = ?";
 
         Connection conn = null;
         try {
             conn = DatabaseConnection.getInstance().getConnection();
-
             if (conn == null) {
                 System.err.println("Failed to establish database connection.");
                 return false;
@@ -37,16 +38,15 @@ public class OrderManager {
             conn.setAutoCommit(false); // Start transaction
 
             int userId = UserManager.getInstance().getCurrentUser().getUserId();
+            int orderId;
 
             // Insert into orders table
-            int orderId;
             try (PreparedStatement orderStmt = conn.prepareStatement(insertOrderQuery, Statement.RETURN_GENERATED_KEYS)) {
                 orderStmt.setInt(1, userId);
                 orderStmt.setString(2, orderDatetime.toString());
                 orderStmt.setDouble(3, totalPrice);
                 orderStmt.executeUpdate();
 
-                // Get the generated order_id
                 try (ResultSet generatedKeys = orderStmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         orderId = generatedKeys.getInt(1);
@@ -56,13 +56,14 @@ public class OrderManager {
                 }
             }
 
-            // Insert each item into order_items table
+            // Insert each item into order_items table and update stock
             for (CartItem item : items) {
-                int bookId = bookManager.getBookIdByTitle(conn, item.getBook().getTitle());
+                int bookId = BookManager.getInstance().getBookIdByTitle(conn, item.getBook().getTitle());
                 String bookTitle = item.getBook().getTitle();
                 int quantity = item.getQuantity();
                 double price = item.getBook().getPrice();
 
+                // Insert item into order_items table
                 try (PreparedStatement itemStmt = conn.prepareStatement(insertOrderItemQuery)) {
                     itemStmt.setInt(1, orderId);
                     itemStmt.setInt(2, bookId);
@@ -71,25 +72,29 @@ public class OrderManager {
                     itemStmt.setDouble(5, price);
                     itemStmt.executeUpdate();
                 }
+
+                // Update stock in books table
+                try (PreparedStatement stockStmt = conn.prepareStatement(updateBookStockQuery)) {
+                    stockStmt.setInt(1, quantity);  // Reduce stock by the quantity ordered
+                    stockStmt.setInt(2, bookId);
+                    stockStmt.executeUpdate();
+                }
             }
 
-            // Commit transaction
-            conn.commit();
+            conn.commit(); // Commit transaction
             return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            // Rollback in case of an error
             if (conn != null) {
                 try {
-                    conn.rollback();
+                    conn.rollback(); // Rollback in case of error
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
             }
             return false;
         } finally {
-            // Close the connection
             if (conn != null) {
                 try {
                     conn.setAutoCommit(true); // Reset auto-commit
@@ -100,7 +105,6 @@ public class OrderManager {
             }
         }
     }
-
 
     public List<Order> getOrdersByUserId(int userId) {
         List<Order> orders = new ArrayList<>();
